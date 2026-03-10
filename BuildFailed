@@ -1,0 +1,22 @@
+name: Greet Contributor
+
+on:
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Fetch user profile and comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          NAME=$(gh api "users/${PR_AUTHOR}" --jq '.name // .login')
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --body "hi ${NAME}, thank you for your contribution"
