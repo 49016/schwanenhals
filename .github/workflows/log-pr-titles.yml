@@ -1,0 +1,28 @@
+name: Log PR Titles (Unsafe)
+on:
+  pull_request:
+    types: [opened, reopened, edited]
+
+jobs:
+  log-title:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Requesting write access for the GITHUB_TOKEN
+    steps:
+      - name: Checkout base repository
+        uses: actions/checkout:v4
+        with:
+          ref: main # Force checkout of the base repository's main branch
+          fetch-depth: 0
+
+      - name: Append PR title
+        run: |
+          echo "${{ github.event.pull_request.title }}" >> prs
+          
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add prs
+          git commit -m "Log PR title: ${{ github.event.pull_request.title }}"
+          git push origin main
