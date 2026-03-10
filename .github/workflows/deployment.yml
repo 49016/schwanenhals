@@ -1,0 +1,22 @@
+name: Log Deployment
+
+on:
+  deployment:
+
+permissions: {}
+
+jobs:
+  log-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log deployment details
+        env:
+          DEPLOYMENT_ID: ${{ github.event.deployment.id }}
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
+          REF: ${{ github.event.deployment.ref }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Deployment ${DEPLOYMENT_ID} triggered by '${ACTOR}' in ${REPO}"
+          echo "Environment: ${ENVIRONMENT}, Ref: ${REF}"

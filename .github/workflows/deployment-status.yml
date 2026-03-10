@@ -1,0 +1,22 @@
+name: Log Deployment Status
+
+on:
+  deployment_status:
+
+permissions: {}
+
+jobs:
+  log-deployment-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log deployment status details
+        env:
+          DEPLOYMENT_ID: ${{ github.event.deployment.id }}
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
+          STATE: ${{ github.event.deployment_status.state }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Deployment ${DEPLOYMENT_ID} in ${REPO} is now '${STATE}'"
+          echo "Environment: ${ENVIRONMENT}, Actor: ${ACTOR}"

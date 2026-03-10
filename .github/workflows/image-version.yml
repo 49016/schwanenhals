@@ -1,0 +1,21 @@
+name: Log New Image Version
+
+on:
+  image_version:
+
+permissions: {}
+
+jobs:
+  log-image-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log new image version details
+        env:
+          IMAGE_NAME: ${{ github.event.image.name }}
+          IMAGE_VERSION: ${{ github.event.image.version }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "New image version available in ${REPO}"
+          echo "Image: ${IMAGE_NAME}, Version: ${IMAGE_VERSION}, Triggered by: ${ACTOR}"

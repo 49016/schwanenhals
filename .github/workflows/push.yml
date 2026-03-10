@@ -1,0 +1,22 @@
+name: Log Push
+
+on:
+  push:
+
+permissions: {}
+
+jobs:
+  log-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log push details
+        env:
+          REF: ${{ github.ref }}
+          REF_TYPE: ${{ github.ref_type }}
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Push by '${ACTOR}' to ${REPO}"
+          echo "Ref: ${REF} (${REF_TYPE}), SHA: ${SHA}"

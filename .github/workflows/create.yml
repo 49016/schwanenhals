@@ -1,0 +1,20 @@
+name: Log Created Ref
+
+on:
+  create:
+
+permissions: {}
+
+jobs:
+  log-ref:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log created ref details
+        env:
+          REF: ${{ github.ref }}
+          REF_TYPE: ${{ github.ref_type }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          echo "Actor '${ACTOR}' created a new ${REF_TYPE} '${REF}' in ${REPO}"

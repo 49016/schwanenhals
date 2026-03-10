@@ -1,0 +1,40 @@
+name: Log Pull Request Activity
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+
+permissions: {}
+
+jobs:
+  log-pull-request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log pull request details
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_ACTION: ${{ github.event.action }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Pull request #${PR_NUMBER} '${PR_TITLE}' was ${PR_ACTION} by '${ACTOR}' in ${REPO}"
+
+  log-pull-request-review:
+    if: github.event_name == 'pull_request_review'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log pull request review details
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REVIEW_STATE: ${{ github.event.review.state }}
+          REVIEW_ACTION: ${{ github.event.action }}
+          REVIEWER: ${{ github.event.review.user.login }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Review on PR #${PR_NUMBER} in ${REPO} was ${REVIEW_ACTION} by '${REVIEWER}' with state '${REVIEW_STATE}'"

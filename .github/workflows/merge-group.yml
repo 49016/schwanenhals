@@ -1,0 +1,21 @@
+name: Log Merge Group
+
+on:
+  merge_group:
+
+permissions: {}
+
+jobs:
+  log-merge-group:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log merge group details
+        env:
+          BASE_REF: ${{ github.event.merge_group.base_ref }}
+          HEAD_REF: ${{ github.event.merge_group.head_ref }}
+          HEAD_SHA: ${{ github.event.merge_group.head_sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Pull request added to merge queue in ${REPO}"
+          echo "Base ref: ${BASE_REF}, Head ref: ${HEAD_REF}, Head SHA: ${HEAD_SHA}"
